@@ -120,7 +120,9 @@
 
     var _addTooltipEvents = function _addTooltipEvents(instance) {
 
-        instance.__canvas.on('mouseover', function() {
+        var canvas = instance.getCanvas();
+
+        canvas.on('mouseover', function() {
 
             // Get parent element of event target
             var parent = d3.event.target.parentNode;
@@ -129,7 +131,7 @@
             // g.interactive-node (g elements do not fire events directly;
             // their children elements do instead).
 
-            var S = instance.settings,
+            var S = instance.__settings,
                 width = S.cellSize * S.numColumns,
                 height = S.cellSize * S.numRows,
                 margin = S.margin;
@@ -211,7 +213,7 @@
         // Set up mouseout event handler. This will hide the tooltip when the
         // mouse leaves an interactive node.
 
-        instance.__canvas.on('mouseout', function() {
+        canvas.on('mouseout', function() {
 
             // Fade the tooltip out
             instance.__tooltip.transition()
@@ -224,7 +226,7 @@
 
             // Remove active class from the currently active node,
             // and reset fill color to the original value
-            instance.__canvas.select('.node.active')
+            canvas.select('.node.active')
                 .classed('active', false);
 
         });  // end mouseout handler
@@ -237,13 +239,13 @@
 
     var _setup = function _setup(instance) {
 
-        var S = instance.settings;
+        var S = instance.__settings;
 
         // Append a base div element and set its position to relative.
         // Then set the tooltip position to absolute. This makes it
         // easier to position the tooltip.
 
-        var baseDiv = instance.container.append('div'),
+        var baseDiv = instance.__container.append('div'),
             svgElem = baseDiv.append('svg');
 
         svgElem.attr('class', 'simple-diagram');
@@ -319,8 +321,8 @@
     var _getCoordinates = function _getCoordinates(instance, row, column) {
 
         return {
-            x: (column - 1) * instance.settings.cellSize,
-            y: (row - 1) * instance.settings.cellSize
+            x: (column - 1) * instance.__settings.cellSize,
+            y: (row - 1) * instance.__settings.cellSize
         };
 
     };
@@ -334,7 +336,7 @@
         var data = Utils.cloneShallow(opts),
             ttHtml;
 
-        if (instance.settings.interactive) {
+        if (instance.__settings.interactive) {
 
             ttHtml = opts.hoverText;
 
@@ -380,8 +382,8 @@
         var textParts = text.split('%%');
 
         var label = parentElem.append('text').attr({
-            x: coords.x + instance.settings.cellSize/2,
-            y: coords.y + instance.settings.cellSize/2,
+            x: coords.x + instance.__settings.cellSize/2,
+            y: coords.y + instance.__settings.cellSize/2,
             'text-anchor': opts.align || 'middle',
             class: 'label'
         });
@@ -455,7 +457,7 @@
         var reverse = fromData.column > toData.column,
             fromCoords = _getCoordinates(instance, fromData.row, fromData.column),
             toCoords = _getCoordinates(instance, toData.row, toData.column),
-            cellsize = instance.settings.cellSize;
+            cellsize = instance.__settings.cellSize;
 
         var adjust = cellsize/2,
             x1 = fromCoords.x + adjust,
@@ -605,8 +607,8 @@
             parentElem = instance.__canvas;
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
-            w = opts.width * instance.settings.cellSize,
-            h = opts.height * instance.settings.cellSize;
+            w = opts.width * instance.__settings.cellSize,
+            h = opts.height * instance.__settings.cellSize;
 
         var box = parentElem.append('rect').attr({
             class: 'box',
@@ -634,7 +636,7 @@
             parentElem = instance.__canvas;
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
-            size = instance.settings.cellSize,
+            size = instance.__settings.cellSize,
             node;
 
         if (opts.shape === 'circle') {
@@ -698,8 +700,8 @@
 
     var SimpleDiagram = function SimpleDiagram(containerSelector, settings) {
 
-        this.container = d3.select(containerSelector);
-        this.settings = Utils.mergeObjects(defaultSettings, settings);
+        this.__container = d3.select(containerSelector);
+        this.__settings = Utils.mergeObjects(defaultSettings, settings);
 
         _setup(this);
         return this;
