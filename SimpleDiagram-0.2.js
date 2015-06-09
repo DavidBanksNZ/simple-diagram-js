@@ -65,7 +65,7 @@
         cellSize: 25,
         numRows: 10,
         numColumns: 10,
-        margin: 2,
+        margin: 1,
         interactive: true
     };
 

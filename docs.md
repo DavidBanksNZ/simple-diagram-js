@@ -35,8 +35,8 @@ var defaultSettings = {
     // Number of columns in the diagram
     numColumns: 10,
 
-    // Margin around the diagram (pixels)
-    margin: 2,
+    // Margin around the diagram on all sides (pixels)
+    margin: 1,
 
     // Should nodes be interactive (tooltips on hover)?
     interactive: true
