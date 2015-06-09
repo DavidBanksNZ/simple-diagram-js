@@ -63,11 +63,10 @@
     var defaultSettings = {
         addGrid: true,
         cellSize: 25,
-        numRows: 20,
-        numColumns: 20,
+        numRows: 10,
+        numColumns: 10,
         margin: 2,
-        interactive: true,
-        activeNodeFill: 'rgb(255,212,212)'
+        interactive: true
     };
 
 
@@ -121,7 +120,7 @@
 
     var _addTooltipEvents = function _addTooltipEvents(instance) {
 
-        instance.canvas.on('mouseover', function() {
+        instance.__canvas.on('mouseover', function() {
 
             // Get parent element of event target
             var parent = d3.event.target.parentNode;
@@ -154,10 +153,10 @@
                     position = _getCoordinates(instance, data.row, data.column);
 
                 // Update tooltip content
-                instance.tooltip.html(data.tooltipHTML)
+                instance.__tooltip.html(data.tooltipHTML)
                     .style('display', 'block');
 
-                var tt_dim = instance.tooltip.node().getBoundingClientRect(),
+                var tt_dim = instance.__tooltip.node().getBoundingClientRect(),
                     tt_width = tt_dim.width,
                     tt_height = tt_dim.height,
                     x = position.x + margin,
@@ -192,13 +191,13 @@
                 }
 
                 // Update position of tooltip
-                instance.tooltip.style({
+                instance.__tooltip.style({
                     left: x + 'px',
                     top: y + 'px'
                 });
 
                 // Fade the tooltip in
-                instance.tooltip.transition()
+                instance.__tooltip.transition()
                     .duration(200)
                     .style('opacity', instance.__tooltipAlpha);
 
@@ -212,20 +211,20 @@
         // Set up mouseout event handler. This will hide the tooltip when the
         // mouse leaves an interactive node.
 
-        instance.canvas.on('mouseout', function() {
+        instance.__canvas.on('mouseout', function() {
 
             // Fade the tooltip out
-            instance.tooltip.transition()
+            instance.__tooltip.transition()
                 .delay(200)
                 .duration(200)
                 .style('opacity', 0)
                 .each('end', function() {
-                    instance.tooltip.style('display', 'none');
+                    instance.__tooltip.style('display', 'none');
                 });
 
             // Remove active class from the currently active node,
             // and reset fill color to the original value
-            instance.canvas.select('.node.active')
+            instance.__canvas.select('.node.active')
                 .classed('active', false);
 
         });  // end mouseout handler
@@ -287,7 +286,7 @@
             .attr('class', 'canvas');
 
         // Make the canvas and a public property on the instance object
-        instance.canvas = canvas;
+        instance.__canvas = canvas;
 
         // We will store node data here
         instance.__nodeData = {};
@@ -295,15 +294,15 @@
         if (S.interactive) {
 
             // Create HTML tooltip
-            instance.tooltip = baseDiv.append('div')
+            instance.__tooltip = baseDiv.append('div')
                 .attr('class', 'simple-diagram-tooltip')
                 .style({
                     position: 'absolute',
                     display: 'none'
                 });
 
-            instance.__tooltipAlpha = instance.tooltip.style('opacity');
-            instance.tooltip.style('opacity', 0);
+            instance.__tooltipAlpha = instance.__tooltip.style('opacity');
+            instance.__tooltip.style('opacity', 0);
 
             // Add tooltip events
             _addTooltipEvents(instance);
@@ -365,7 +364,7 @@
     var _addLabel = function _addLabel(instance, parentElem, opts) {
 
         if (!parentElem)
-            parentElem = instance.canvas;
+            parentElem = instance.__canvas;
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
             text = opts.label,
@@ -540,7 +539,7 @@
     var _addLine = function _addLine(instance, parentElem, opts) {
 
         if (!parentElem)
-            parentElem = instance.canvas;
+            parentElem = instance.__canvas;
 
         if (typeof opts.addArrow === 'undefined')
             opts.addArrow = true;
@@ -603,7 +602,7 @@
     var _addBox = function _addBox(instance, parentElem, opts) {
 
         if (!parentElem)
-            parentElem = instance.canvas;
+            parentElem = instance.__canvas;
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
             w = opts.width * instance.settings.cellSize,
@@ -632,7 +631,7 @@
     var _addNodeShape = function _addCircleNode(instance, parentElem, opts) {
 
         if (!parentElem)
-            parentElem = instance.canvas;
+            parentElem = instance.__canvas;
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
             size = instance.settings.cellSize,
@@ -671,7 +670,7 @@
     var _addNode = function _addNode(instance, parentElem, opts) {
 
         if (!parentElem)
-            parentElem = instance.canvas;
+            parentElem = instance.__canvas;
 
         var g = parentElem.append('g')
             .attr('class', 'node')
@@ -708,22 +707,6 @@
     };
 
 
-    // addLabel method for adding a label to the diagram
-
-    SimpleDiagram.prototype.addLabel = function addLabel(opts) {
-        _addLabel(this, null, opts);
-        return this;
-    };
-
-
-    // addBox method for adding a rectangular shape to the diagram
-
-    SimpleDiagram.prototype.addBox = function addBox(opts) {
-        _addBox(this, null, opts);
-        return this;
-    };
-
-
     // addNode method for adding a node to the diagram
 
     SimpleDiagram.prototype.addNode = function addNode(opts) {
@@ -736,6 +719,22 @@
 
     SimpleDiagram.prototype.addLine = function addLink(opts) {
         _addLine(this, null, opts);
+        return this;
+    };
+
+
+    // addLabel method for adding a label to the diagram
+
+    SimpleDiagram.prototype.addLabel = function addLabel(opts) {
+        _addLabel(this, null, opts);
+        return this;
+    };
+
+
+    // addBox method for adding a rectangular shape to the diagram
+
+    SimpleDiagram.prototype.addBox = function addBox(opts) {
+        _addBox(this, null, opts);
         return this;
     };
 
