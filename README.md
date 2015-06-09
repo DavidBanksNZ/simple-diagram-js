@@ -1,4 +1,4 @@
-# SimpleDiagram.js
+# SimpleDiagram.js v 0.2
 
 **SimpleDiagram.js** is a small JavaScript library for creating simple diagrams with nodes and links.
 There is nothing fancy going on here; no complex algorithms for positioning are included.
