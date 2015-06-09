@@ -674,6 +674,9 @@
         if (!parentElem)
             parentElem = instance.__canvas;
 
+        if (! (opts.shape === 'circle' || opts.shape === 'square'))
+            opts.shape = 'circle';
+
         var g = parentElem.append('g')
             .attr('class', 'node')
             .attr('data-name', opts.name);
