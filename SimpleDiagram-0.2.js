@@ -246,21 +246,19 @@
         // easier to position the tooltip.
 
         var baseDiv = instance.__container.append('div'),
-            svgElem = baseDiv.append('svg');
+            svgElem = baseDiv.append('svg'),
+            width = S.cellSize * S.numColumns,
+            height = S.cellSize * S.numRows;
 
         svgElem.attr('class', 'simple-diagram');
         baseDiv.style('position', 'relative');
-
-        var width = S.cellSize * S.numColumns,
-            height = S.cellSize * S.numRows,
-            margin = 2;
-
-        var defs = svgElem.append('defs');
 
         svgElem.attr({
             height: height + 2 * S.margin,
             width: width + 2 * S.margin
         });
+
+        var defs = svgElem.append('defs');
 
         var svg = svgElem.append('g')
             .attr('transform', 'translate(' + S.margin + ',' + S.margin + ')');
