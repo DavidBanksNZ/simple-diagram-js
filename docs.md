@@ -7,7 +7,7 @@ head element, otherwise your diagrams are going to look, well, really weird.
 When you include the *SimpleDiagram.js* library in a webpage, a constructor
 function called `SimpleDiagram` will be exposed on the global window object.
 
-**Note:** All row and column numbers in this library are 1-based, not 0-based.
+**Note**: All row and column numbers in this library are 1-based, not 0-based.
 Position a node at row 1, column 1 to insert it into the top-left cell.
 
 
@@ -52,6 +52,9 @@ var diagram = new SimpleDiagram('#diagram', {
     cellSize: 35
 });
 ```
+
+**Note**: Total width of the SVG element will be `numColumns * cellSize + 2 * margin` and
+total height will be `numRows * cellSize + 2 * margin`.
 
 The returned `diagram` object has several methods for adding content to the diagram.
 These are described below.
