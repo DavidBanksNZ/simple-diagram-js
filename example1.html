@@ -23,7 +23,7 @@
     <div id="diagram"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="SimpleDiagram-0.2.js"></script>
+    <script src="SimpleDiagram-0.2.min.js"></script>
     <script>
 
     var diagram = new SimpleDiagram('#diagram', {
@@ -50,7 +50,6 @@
         diagram.addNode({
             name: node.name,
             label: node.name,
-            shape: 'circle',
             row: node.row,
             column: node.column
         });
