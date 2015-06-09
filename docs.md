@@ -11,6 +11,8 @@ function called `SimpleDiagram` will be exposed on the global window object.
 Position a node at row 1, column 1 to insert it into the top-left cell.
 
 
+
+<br><br>
 <a href="#SimpleDiagram" name="SimpleDiagram">#</a> **SimpleDiagram**(*containerSelector*[, *settings*])
 
 The constructor must be called with the new operator. You should provide a CSS
@@ -56,6 +58,7 @@ These are described below.
 
 
 
+<br><br>
 <a href="#addNode" name="addNode">#</a> diagram.**addNode**(*opts*)
 
 [Chainable] Add a node to the diagram. At a minimum you should provide the following properties
@@ -76,6 +79,7 @@ Other optional properties are:
 
 
 
+<br><br>
 <a href="#addLine" name="addLine">#</a> diagram.**addLine**(*opts*)
 
 [Chainable] Add a line to the diagram. At minimum you should provide the following properties
@@ -92,6 +96,7 @@ Other optional properties are:
 
 
 
+<br><br>
 <a href="#addLabel" name="addLabel">#</a> diagram.**addLabel**(*opts*)
 
 [Chainable] Add a text label to the diagram. At minimum you should provide the following properties
@@ -109,6 +114,7 @@ Other optional properties are:
 
 
 
+<br><br>
 <a href="#addBox" name="addBox">#</a> diagram.**addBox**(*opts*)
 
 [Chainable] Add a box to the diagram. At minimum you should provide the following
@@ -126,6 +132,7 @@ Other optional properties are:
 
 
 
+<br><br>
 <a href="#getCoordinatesAtCell" name="getCoordinatesAtCell">#</a> diagram.**getCoordinatesAtCell**(*row*, *column*)
 
 Get the pixel coordinates at a location defined by a row number and column number.
@@ -134,6 +141,7 @@ to add your own custom elements to the diagram and easily position them.
 
 
 
+<br><br>
 <a href="#getCanvas" name="getCanvas">#</a> diagram.**getCanvas**()
 
 Returns the element where all drawing takes place inside as a D3 element.
