@@ -747,6 +747,14 @@
     };
 
 
+    // getCanvas method for getting the canvas object. You can then use d3 methods
+    // and getCoordinatesAtCell() to do custom things like add your own shapes.
+
+    SimpleDiagram.prototype.getCanvas = function getCanvas() {
+        return this.__canvas;
+    };
+
+
     // Expose SimpleDiagram constructor function on global window object
     window.SimpleDiagram = SimpleDiagram;
 
