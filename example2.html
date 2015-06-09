@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>SimpleDiagram.js</title>
+    <link rel="stylesheet" href="SimpleDiagram-0.2.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SimpleDiagram.js</h1>
+    <p>Sample diagram</p>
+    <div id="diagram"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="SimpleDiagram-0.2.js"></script>
+    <script>
+
+    d3.csv('example2.csv', function(d) {
+
+        var diagram = new SimpleDiagram('#diagram', {
+            addGrid: true,
+            cellSize: 28,
+            numColumns: 30,
+            numRows: 22
+        });
+
+        var boxes = [
+            {row: 11, column: 1, width: 14, height: 7},
+            {row: 11, column: 18, width: 13, height: 7}
+        ];
+
+        var labels = [
+            {row: 17, column: 1, label: 'j = 2 ... t_{1}', align: 'start'},
+            {row: 17, column: 30, label: 'j = 2 ... t_{1}', align: 'end'}
+        ];
+
+        boxes.forEach(function(b) {
+            diagram.addBox(b);
+        });
+
+        labels.forEach(function(L) {
+            diagram.addLabel(L);
+        });
+
+        d.forEach(function(node) {
+            node.shape = (node.shape === 'c' ? 'circle' : 'square');
+            node.column = +node.column;
+            node.row = +node.row;
+            diagram.addNode(node);
+        });
+
+        d.forEach(function(node) {
+
+            if (!node.linesTo)
+                return;
+
+            var linesTo = node.linesTo.split(';');
+
+            linesTo.forEach(function(n) {
+
+                var to;
+
+                if (n.search(/^\[/) > -1) {
+                    to = JSON.parse(n);
+                } else {
+                    to = n;
+                }
+
+                diagram.addLine({
+                    from: node.name,
+                    to: to
+                });
+
+            });
+
+        });
+
+    });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+name,row,column,shape,label,linesTo,hoverText
+d,1,5,s,d,d1;l1,Scientist's estimate of distance
+d1,3,5,c,d_{1},l1,The true but unknown distance
+w1,2,10,c,w_{1},l1,A random weighting factor that makes the distribution of fragments more realistic
+l1,5,10,c,l_{1},x0,The true but unknown mean number of fragments transferred
+l,5,5,s,l,l1,Scientists estimate of mean number of fragments transferred
+x0,5,17,c,x_{0},b0;q0;x1,The true but unknown actual number of fragments transferred
+l0,2,22,s,l_{0},p0,The lower bound on proportion of fragments lost in the first hour
+u0,2,26,s,u_{0},p0,The upper bound on proportion of fragments lost in the first hour
+p0,4,24,c,p_{0},b0,The true but unknown probability that a fragment will be lost in the first hour
+b0,7,24,c,b_{0},x1,The true but unknown number of fragments lost in the first hour
+q,7,10,s,d_{1},q0,Scientist's estimate of the proportion of high persistence fragments
+q0,7,14,c,q_{0},q1;x1,The true but unknown number of high persistence fragments
+x1,7,20,c,x_{1},xj,The true but unknown number of fragments remaining after the first hour excluding high persistent fragments
+l*0,7,3,s,l*_{0},p*0,The lower bound on proportion of high persistence fragments lost in the first hour
+u*0,7,7,s,u*_{0},p*0,The upper bound on proportion of high persistence fragments lost in the first hour
+p*0,9,5,c,p*_{0},b*0,The true but unknown probability that a high persistence fragment will be lost in the first hour
+b*0,9,9,c,b*_{0},q0;q1,The true number of high persistence fragments lost in the first hour
+q1,9,12,c,q_{1},qj,The true number of high persistence fragments remaining after the first hour
+t,12,16,s,t,t1,Scientist's estimate of time between crime and apprehension
+t1,14,16,c,t_{1},"[14,13.6];[14,18.4]",The true but unknown time between crime and apprehension
+l*j,12,3,s,l*_{j},p*j,The lower bound on proportion of high persistence fragments lost in the j^{th} hour
+u*j,12,7,s,u*_{j},p*j,The upper bound on proportion of high persistence fragments lost in the j^{th} hour
+p*j,14,5,c,p*_{j},b*j,The true but unknown probability that a high persistence fragment is lost in the j^{th} hour
+qj,12,12,c,q_{j},b*j;qj+1,The true number of high persistence fragments remaining after the j^{th} hour
+qj+1,16,12,c,q_{j+1},y1,The true number of high persistence fragments remaining after the (j+1)^{th} hour
+b*j,14,9,c,b*_{j},qj+1,The true number of high persistence fragments lost in the j^{th} hour
+lj,12,25,s,l_{j},pj,The lower bound on proportion of normal fragments lost in the j^{th} hour
+uj,12,29,s,u_{j},pj,The upper bound on proportion of normal fragments lost in the j^{th} hour
+pj,14,27,c,p_{j},bj,The true but unknown probability that a normal fragment is lost in the j^{th} hour
+xj,12,20,c,x_{j},bj;xj+1,The true number of normal fragments remaining after the j^{th} hour
+xj+1,19,20,c,x_{j+1},y1,The true number of normal fragments remaining after the (j+1)^{th} hour
+bj,14,23,c,b_{j},xj+1,The true number of regular fragments lost in the j^{th} hour
+lR,19,4,s,l_{R},R,The lower bound on the proportion of fragments not detected in the laboratory
+uR,19,8,s,u_{R},R,The upper bound on the proportion of fragments not detected in the laboratory
+R,21,6,c,R,b,The true but unknown probability that a fragment detected in the laboratory
+y1,19,16,c,y_{1},b;Y,The true total number of fragments remaining on the suspect upon apprehension
+b,22,14,c,b,Y,The true unknown number of fragments not detected in the laboratory
+Y,22,20,c,Y,,The final number of fragments observed

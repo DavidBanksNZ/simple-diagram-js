@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>SimpleDiagram.js Example</title>
+    <link rel="stylesheet" href="SimpleDiagram-0.2.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>SimpleDiagram.js</h1>
+    <p>Example</p>
+    <div id="diagram"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="SimpleDiagram-0.2.js"></script>
+    <script>
+
+    var diagram = new SimpleDiagram('#diagram', {
+        addGrid: true,
+        cellSize: 35,
+        numColumns: 9,
+        numRows: 9,
+        interactive: false
+    });
+
+    var nodes = [
+        {name: 'A', row: 2, column: 2, connectsTo: 'D'},
+        {name: 'B', row: 2, column: 5, connectsTo: 'D'},
+        {name: 'C', row: 2, column: 8, connectsTo: 'D'},
+        {name: 'D', row: 5, column: 5, connectsTo: 'F'},
+        {name: 'E', row: 8, column: 2, connectsTo: 'F'},
+        {name: 'F', row: 8, column: 5}
+    ];
+
+    // Draw the nodes!
+
+    nodes.forEach(function(node) {
+
+        diagram.addNode({
+            name: node.name,
+            label: node.name,
+            shape: 'circle',
+            row: node.row,
+            column: node.column
+        });
+
+    });
+
+    // Draw the links!
+
+    nodes.forEach(function(node) {
+
+        if (!node.connectsTo)
+            return;
+
+        diagram.addLine({
+            from: node.name,
+            to: node.connectsTo
+        });
+
+    });
+
+    </script>
+
+</body>
+
+</html>
