@@ -363,10 +363,7 @@
 
     // Function for adding a label to a particular cell.
 
-    var _addLabel = function _addLabel(instance, parentElem, opts) {
-
-        if (!parentElem)
-            parentElem = instance.__canvas;
+    var _addLabel = function _addLabel(instance, opts, isNode) {
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
             text = opts.label,
@@ -381,12 +378,20 @@
 
         var textParts = text.split('%%');
 
-        var label = parentElem.append('text').attr({
+        var textElem = document.createElementNS(d3.ns.prefix.svg, 'text');
+
+        var label = d3.select(textElem).attr({
             x: coords.x + instance.__settings.cellSize/2,
             y: coords.y + instance.__settings.cellSize/2,
             'text-anchor': opts.align || 'middle',
             class: 'label'
         });
+
+        // If label is part of a node, create it and return it.
+        // Otherwise append it to the canvas.
+
+        if (!isNode)
+            instance.getCanvas().node().appendChild(label.node());
 
         if (opts.class)
             label.classed(opts.class, true);
@@ -448,6 +453,8 @@
             tspan.text(string);
 
         });
+
+        return label;
 
     };
 
@@ -538,10 +545,7 @@
 
     // Function for adding a link between two cells.
 
-    var _addLine = function _addLine(instance, parentElem, opts) {
-
-        if (!parentElem)
-            parentElem = instance.__canvas;
+    var _addLine = function _addLine(instance, opts) {
 
         if (typeof opts.addArrow === 'undefined')
             opts.addArrow = true;
@@ -582,7 +586,7 @@
 
         var linkEndPoints = _getLinkEndPoints(instance, fromData, toData);
 
-        var line = parentElem.append('line')
+        var line = instance.getCanvas().append('line')
             .attr(linkEndPoints)
             .attr('class', 'line');
 
@@ -601,16 +605,13 @@
     // Function for drawing a rectangular box shape of any dimension into
     // the diagram. Can be useful for visually grouping nodes together.
 
-    var _addBox = function _addBox(instance, parentElem, opts) {
-
-        if (!parentElem)
-            parentElem = instance.__canvas;
+    var _addBox = function _addBox(instance, opts) {
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
             w = opts.width * instance.__settings.cellSize,
             h = opts.height * instance.__settings.cellSize;
 
-        var box = parentElem.append('rect').attr({
+        var box = instance.getCanvas().append('rect').attr({
             class: 'box',
             x: coords.x,
             y: coords.y,
@@ -630,10 +631,7 @@
 
     // Function for adding a node shape element to the diagram.
 
-    var _addNodeShape = function _addCircleNode(instance, parentElem, opts) {
-
-        if (!parentElem)
-            parentElem = instance.__canvas;
+    var _addNodeShape = function _addCircleNode(instance, opts, nodeG) {
 
         var coords = _getCoordinates(instance, opts.row, opts.column),
             size = instance.__settings.cellSize,
@@ -641,7 +639,7 @@
 
         if (opts.shape === 'circle') {
 
-            node = parentElem.append('circle').attr({
+            node = nodeG.append('circle').attr({
                 cx: coords.x + size/2,
                 cy: coords.y + size/2,
                 r: size/2
@@ -649,7 +647,7 @@
 
         } else {
 
-            node = parentElem.append('rect').attr({
+            node = nodeG.append('rect').attr({
                 x: coords.x,
                 y: coords.y,
                 width: size,
@@ -669,15 +667,12 @@
 
     // Function for adding a node to the diagram (node shape + label)
 
-    var _addNode = function _addNode(instance, parentElem, opts) {
-
-        if (!parentElem)
-            parentElem = instance.__canvas;
+    var _addNode = function _addNode(instance, opts) {
 
         if (! (opts.shape === 'circle' || opts.shape === 'square'))
             opts.shape = 'circle';
 
-        var g = parentElem.append('g')
+        var g = instance.getCanvas().append('g')
             .attr('class', 'node')
             .attr('data-name', opts.name);
 
@@ -686,11 +681,13 @@
 
         // Add node shape
         opts.style = opts.shapeStyle;
-        _addNodeShape(instance, g, opts);
+        _addNodeShape(instance, opts, g);
 
         // Add node label
         opts.style = opts.labelStyle;
-        _addLabel(instance, g, opts);
+        var label = _addLabel(instance, opts, true);
+
+        g.node().appendChild(label.node());
 
         if (opts.class)
             g.classed(opts.class, true);
@@ -715,7 +712,7 @@
     // addNode method for adding a node to the diagram
 
     SimpleDiagram.prototype.addNode = function addNode(opts) {
-        _addNode(this, null, opts);
+        _addNode(this, opts);
         return this;
     };
 
@@ -723,7 +720,7 @@
     // addLine method for adding a lines between nodes and/or positions
 
     SimpleDiagram.prototype.addLine = function addLink(opts) {
-        _addLine(this, null, opts);
+        _addLine(this, opts);
         return this;
     };
 
@@ -731,7 +728,7 @@
     // addLabel method for adding a label to the diagram
 
     SimpleDiagram.prototype.addLabel = function addLabel(opts) {
-        _addLabel(this, null, opts);
+        _addLabel(this, opts, false);
         return this;
     };
 
@@ -739,7 +736,7 @@
     // addBox method for adding a rectangular shape to the diagram
 
     SimpleDiagram.prototype.addBox = function addBox(opts) {
-        _addBox(this, null, opts);
+        _addBox(this, opts);
         return this;
     };
 
