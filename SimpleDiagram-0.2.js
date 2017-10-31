@@ -43,8 +43,31 @@
 
             return o;
 
+        },
+ 
+        // Function to parse object to d3.node.attr, change v3.to.v4
+        setAttrs: function setAttrs(node, attrObject)
+        {
+            var name = "";
+            for (name in attrObject) {
+              if (attrObject.hasOwnProperty(name)) {
+                node.attr(name, attrObject[name]);
+              }
+            }
+            return node;
+        },
+        
+        // Function to parse object to set styles
+        setStyles: function setStyles(node, attrObject)
+        {
+            var name = "";
+            for (name in attrObject) {
+              if (attrObject.hasOwnProperty(name)) {
+                node.style(name, attrObject[name]);
+              }
+            }
+            return node;
         }
-
     };
 
 
@@ -80,8 +103,8 @@
             width = settings.numColumns * settings.cellSize,
             height = settings.numRows * settings.cellSize;
 
-        var grid = svg.append('g')
-            .attr('class', 'grid');
+        var grid = svg.append('g');
+        grid.attr('class', 'grid');
 
         if (style)
             grid.style(style);
@@ -89,8 +112,8 @@
         // Draw vertical grid lines
         for (i = 0; i < nv; i++) {
 
-            grid.append('line')
-                .attr({
+            var gridLineVertical = grid.append('line');
+            Utils.setAttrs(gridLineVertical, {
                     x1: i * settings.cellSize,
                     x2: i * settings.cellSize,
                     y1: 0,
@@ -102,8 +125,8 @@
         // Draw horizontal grid lines
         for (i = 0; i < nh; i++) {
 
-            grid.append('line')
-                .attr({
+            var gridLineHorizontal = grid.append('line');
+            Utils.setAttrs(gridLineHorizontal, {
                     x1: 0,
                     x2: width,
                     y1: i * settings.cellSize,
@@ -155,8 +178,8 @@
                     position = _getCoordinates(instance, data.row, data.column);
 
                 // Update tooltip content
-                instance.__tooltip.html(data.tooltipHTML)
-                    .style('display', 'block');
+                var tooltipContent = instance.__tooltip.html(data.tooltipHTML);
+                tooltipContent.style('display', 'block');
 
                 var tt_dim = instance.__tooltip.node().getBoundingClientRect(),
                     tt_width = tt_dim.width,
@@ -193,7 +216,7 @@
                 }
 
                 // Update position of tooltip
-                instance.__tooltip.style({
+                Utils.setStyles(instance.__tooltip, {
                     left: x + 'px',
                     top: y + 'px'
                 });
@@ -220,7 +243,7 @@
                 .delay(200)
                 .duration(200)
                 .style('opacity', 0)
-                .each('end', function() {
+                .on('end', function() {
                     instance.__tooltip.style('display', 'none');
                 });
 
@@ -253,19 +276,19 @@
         svgElem.attr('class', 'simple-diagram');
         baseDiv.style('position', 'relative');
 
-        svgElem.attr({
+        Utils.setAttrs(svgElem, {
             height: height + 2 * S.margin,
             width: width + 2 * S.margin
         });
 
         var defs = svgElem.append('defs');
 
-        var svg = svgElem.append('g')
-            .attr('transform', 'translate(' + S.margin + ',' + S.margin + ')');
+        var svg = svgElem.append('g');
+        svg.attr('transform', 'translate(' + S.margin + ',' + S.margin + ')');
 
         // Add line marker definition
-        defs.append('marker')
-            .attr({
+        var _marker = defs.append('marker');
+        Utils.setAttrs(_marker, {
                 id: 'arrow',
                 refX: 8,
                 refY: 3,
@@ -273,17 +296,17 @@
                 markerWidth: 8,
                 markerHeight: 6,
                 orient: 'auto'
-            })
-            .append('path')
-                .attr('d', 'M 0 0 8 3 0 6 Z');
+            });
+        var _markerPath = _marker.append('path');
+        _markerPath.attr('d', 'M 0 0 8 3 0 6 Z');
 
         // Draw background grid if specified
         if (S.addGrid)
             _addGrid(svg, S);
 
         // Element to draw all diagram content in
-        var canvas = svg.append('g')
-            .attr('class', 'canvas');
+        var canvas = svg.append('g');
+        canvas.attr('class', 'canvas');
 
         // Make the canvas and a public property on the instance object
         instance.__canvas = canvas;
@@ -294,9 +317,9 @@
         if (S.interactive) {
 
             // Create HTML tooltip
-            instance.__tooltip = baseDiv.append('div')
-                .attr('class', 'simple-diagram-tooltip')
-                .style({
+            instance.__tooltip = baseDiv.append('div');
+            instance.__tooltip.attr('class', 'simple-diagram-tooltip');
+            Utils.setStyles(instance.__tooltip, {
                     position: 'absolute',
                     display: 'none'
                 });
@@ -376,9 +399,10 @@
 
         var textParts = text.split('%%');
 
-        var textElem = document.createElementNS(d3.ns.prefix.svg, 'text');
+        var textElem = document.createElementNS(d3.namespaces.svg, 'text');
 
-        var label = d3.select(textElem).attr({
+        var label = d3.select(textElem);
+        Utils.setAttrs(label, {
             x: coords.x + instance.__settings.cellSize/2,
             y: coords.y + instance.__settings.cellSize/2,
             'text-anchor': opts.align || 'middle',
@@ -424,8 +448,8 @@
 
                 string = t.replace(/<sup>(.*?)<\/sup>/, '$1');
 
-                tspan.attr('dy', (supDy - lastDy) + 'em')
-                    .attr('class', 'superscript');
+                tspan.attr('dy', (supDy - lastDy) + 'em');
+                tspan.attr('class', 'superscript');
 
                 lastDy = supDy;
 
@@ -435,8 +459,8 @@
 
                 string = t.replace(/<sub>(.*?)<\/sub>/, '$1');
 
-                tspan.attr('dy', (subDy - lastDy) + 'em')
-                    .attr('class', 'subscript');
+                tspan.attr('dy', (subDy - lastDy) + 'em');
+                tspan.attr('class', 'subscript');
 
                 lastDy = subDy;
 
@@ -584,9 +608,9 @@
 
         var linkEndPoints = _getLinkEndPoints(instance, fromData, toData);
 
-        var line = instance.getCanvas().append('line')
-            .attr(linkEndPoints)
-            .attr('class', 'line');
+        var line = instance.getCanvas().append('line');
+        Utils.setAttrs(line, linkEndPoints);
+        line.attr('class', 'line');
 
         if (opts.addArrow)
             line.attr('marker-end', 'url(#arrow)');
@@ -609,7 +633,8 @@
             w = opts.width * instance.__settings.cellSize,
             h = opts.height * instance.__settings.cellSize;
 
-        var box = instance.getCanvas().append('rect').attr({
+        var box = instance.getCanvas().append('rect');
+        Utils.setAttrs(box, {
             class: 'box',
             x: coords.x,
             y: coords.y,
@@ -637,7 +662,8 @@
 
         if (opts.shape === 'circle') {
 
-            node = nodeG.append('circle').attr({
+            node = nodeG.append('circle');
+            Utils.setAttrs(node, {
                 cx: coords.x + size/2,
                 cy: coords.y + size/2,
                 r: size/2
@@ -645,7 +671,8 @@
 
         } else {
 
-            node = nodeG.append('rect').attr({
+            node = nodeG.append('rect');
+            Utils.setAttrs(node, {
                 x: coords.x,
                 y: coords.y,
                 width: size,
@@ -670,9 +697,9 @@
         if (! (opts.shape === 'circle' || opts.shape === 'square'))
             opts.shape = 'circle';
 
-        var g = instance.getCanvas().append('g')
-            .attr('class', 'node')
-            .attr('data-name', opts.name);
+        var g = instance.getCanvas().append('g');
+        g.attr('class', 'node');
+        g.attr('data-name', opts.name);
 
         // Record node data
         _recordNodeData(instance, opts);

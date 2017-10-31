@@ -7,7 +7,7 @@ a diagram to be laid out exactly the way you want, but at the cost of more work 
 as you'll need to determine the coordinates of every node and any other shapes you want to add to
 your diagram.
 
-**Dependencies**: [D3.js](http://d3js.org/)
+**Dependencies**: [D3.js](http://d3js.org/) version 4
 
 ### [Full Documentation](docs.md)
 

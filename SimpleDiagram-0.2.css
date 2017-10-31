@@ -4,7 +4,7 @@ svg.simple-diagram {
 
 svg.simple-diagram .node .node-shape {
     stroke: #333;
-    fill: #EEE;
+    fill: #ABD5EE;
     stroke-width: 1px;
 }
 
@@ -37,13 +37,13 @@ svg.simple-diagram .superscript {
 }
 
 svg.simple-diagram marker#arrow {
-    fill: #333;
+    fill: #1B80C4;
 }
 
 svg.simple-diagram .line {
     fill: none;
-    stroke: #333;
-    stroke-width: 1px;
+    stroke: #1B80C4;
+    stroke-width: 1.5px;
 }
 
 svg.simple-diagram .grid {
