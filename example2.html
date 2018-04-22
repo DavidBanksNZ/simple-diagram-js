@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>SimpleDiagram.js</title>
-    <link rel="stylesheet" href="SimpleDiagram-0.2.css">
+    <link rel="stylesheet" href="simple-diagram.css">
     <style>
         body {
             padding: 20px;
@@ -15,18 +14,17 @@
         }
     </style>
 </head>
-
 <body>
-
     <h1>SimpleDiagram.js</h1>
     <p>Sample diagram</p>
     <div id="diagram"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="SimpleDiagram-0.2.min.js"></script>
+    <script src="https://d3js.org/d3-selection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+    <script src="https://d3js.org/d3-transition.v1.min.js"></script>
+    <script src="simple-diagram.js"></script>
     <script>
-
-    d3.csv('example2.csv', function(d) {
+    d3.csv('example2.csv').then(function(d) {
 
         var diagram = new SimpleDiagram('#diagram', {
             addGrid: true,
@@ -89,7 +87,5 @@
     });
 
     </script>
-
 </body>
-
 </html>
