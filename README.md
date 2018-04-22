@@ -1,4 +1,4 @@
-# SimpleDiagram.js v 0.2
+# SimpleDiagram.js
 
 **SimpleDiagram.js** is a small JavaScript library for creating simple diagrams with nodes and links.
 There is nothing fancy going on here; no complex algorithms for positioning are included.
@@ -7,7 +7,12 @@ a diagram to be laid out exactly the way you want, but at the cost of more work 
 as you'll need to determine the coordinates of every node and any other shapes you want to add to
 your diagram.
 
-**Dependencies**: [D3.js](http://d3js.org/)
+**Dependencies**:
+[D3.js](http://d3js.org/)
+
+Specifically, the following standalone packages (and their dependencies) are needed:
+- d3-selection
+- d3-transition
 
 ### [Full Documentation](docs.md)
 
@@ -36,7 +41,6 @@ var nodes = [
 
 // Draw the nodes!
 nodes.forEach(function(node) {
-
     diagram.addNode({
         name: node.name,
         label: node.name,
@@ -44,12 +48,10 @@ nodes.forEach(function(node) {
         row: node.row,
         column: node.column
     });
-
 });
 
 // Draw the links!
 nodes.forEach(function(node) {
-
     if (!node.connectsTo)
         return;
 
@@ -57,7 +59,6 @@ nodes.forEach(function(node) {
         from: node.name,
         to: node.connectsTo
     });
-
 });
 ```
 
